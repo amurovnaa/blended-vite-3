@@ -6,9 +6,12 @@ import toast from 'react-hot-toast';
 import { fetchCountry } from '../service/countryApi';
 import GoBackBtn from '../components/GoBackBtn/GoBackBtn';
 import CountryInfo from '../components/CountryInfo/CountryInfo';
+import Loader from '../components/Loader/Loader';
 
 const Country = () => {
   const [country, setCountry] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
   const { countryId } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
@@ -19,6 +22,7 @@ const Country = () => {
     const abortController = new AbortController();
     const getCountryInfo = async () => {
       try {
+        setIsLoading(true);
         const data = await fetchCountry(countryId, abortController.signal);
         setCountry(data);
 
@@ -29,6 +33,10 @@ const Country = () => {
         if (error.code !== 'ERR_CANCELED') {
           toast.error('Try again later...');
         }
+      } finally {
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 300);
       }
     };
     getCountryInfo();
@@ -41,6 +49,7 @@ const Country = () => {
     <Section>
       <Container>
         <GoBackBtn onClick={handleClick} />
+        {isLoading && <Loader />}
         {country && (
           <CountryInfo
             flag={country.flag}
