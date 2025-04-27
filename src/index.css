@@ -57,3 +57,10 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+li {
+  text-decoration: none;
+  list-style: none;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
